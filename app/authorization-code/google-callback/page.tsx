@@ -6,11 +6,11 @@ interface SearchParamsProps {
   };
 }
 
-const GithubAuthCallback = async ({ searchParams }: SearchParamsProps) => {
+const GoogleAuthCallback = async ({ searchParams }: SearchParamsProps) => {
   const { code } = searchParams;
 
   // Send the authorization code to the server to complete the authentication process
-  const response = await fetch(`http://localhost:3000/api/auth/github`, {
+  const response = await fetch(`http://localhost:3000/api/authorization-code/google`, {
     body: JSON.stringify({ code }),
     method: "POST",
     headers: {
@@ -20,9 +20,9 @@ const GithubAuthCallback = async ({ searchParams }: SearchParamsProps) => {
 
   if (response.ok) {
     const user = await response.json();
-    return <UserData userData={user.userData} />;
+    return <UserData userDataWithToken={user.userDataWithToken} />;
   }
-  return <div className="text-3xl">Login failed!</div>;
+  return <div className="text-3xl">Login Failed!</div>;
 };
 
-export default GithubAuthCallback;
+export default GoogleAuthCallback;

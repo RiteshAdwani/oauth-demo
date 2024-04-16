@@ -9,7 +9,7 @@ export const POST = async (req: NextRequest) => {
   // Retrieve OAuth client ID, client secret, and redirect URI from environment variables
   const clientId = process.env.GOOGLE_CLIENT_ID;
   const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
-  const redirectUri = "http://localhost:3000/google-callback";
+  const redirectUri = "http://localhost:3000/authorization-code/google-callback";
 
   try {
     // Exchange the authorization code for an access token from Google OAuth server
@@ -40,7 +40,7 @@ export const POST = async (req: NextRequest) => {
 
     // Fetch user data from Google using the access token
     const userDataResponse = await fetch(
-      "https://www.googleapis.com/oauth2/v2/userinfo",
+      "https://www.googleapis.com/oauth2/v3/userinfo",
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -57,8 +57,13 @@ export const POST = async (req: NextRequest) => {
     const userData = await userDataResponse.json();
     console.log("User Data:", userData);
 
+    const userDataWithToken = {
+      ...userData,
+      accessToken  // Add the token directly into the userData object
+    };
+ 
     // Return the user data in the response
-    return NextResponse.json({ userData });
+    return NextResponse.json({ userDataWithToken });
   } catch (error) {
     console.error("Authentication error:", error);
     redirect("/");

@@ -13,7 +13,7 @@ const LoginButton = ({ provider }: LoginButtonProps) => {
     provider === "google"
       ? process.env.GOOGLE_CLIENT_ID
       : process.env.GITHUB_CLIENT_ID;
-  const redirectUri = `http://localhost:3000/${provider}-callback`;
+  const redirectUri = `http://localhost:3000/authorization-code/${provider}-callback`;
   const scope = encodeURIComponent(
     provider === "google" ? "email profile openid" : "user"
   );

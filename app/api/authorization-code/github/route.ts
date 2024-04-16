@@ -9,7 +9,7 @@ export const POST = async (req: NextRequest) => {
   // Retrieve OAuth client ID, client secret, and redirect URI from environment variables
   const clientId = process.env.GITHUB_CLIENT_ID;
   const clientSecret = process.env.GITHUB_CLIENT_SECRET;
-  const redirectUri = "http://localhost:3000/github-callback";
+  const redirectUri = "http://localhost:3000/authorization-code/github-callback";
 
   try {
     // Exchange the authorization code for an access token from Github OAuth server
@@ -56,8 +56,13 @@ export const POST = async (req: NextRequest) => {
     const userData = await userDataResponse.json();
     console.log("User Data:", userData);
 
+    const userDataWithToken = {
+      ...userData,
+      accessToken  // Add the token directly into the userData object
+    };
+ 
     // Return the user data in the response
-    return NextResponse.json({ userData });
+    return NextResponse.json({ userDataWithToken });
   } catch (error) {
     console.error("Authentication error:", error);
     redirect("/");

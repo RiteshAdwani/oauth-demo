@@ -8,7 +8,7 @@ const LogoutButton = () => {
 
   const handleLogout = () => {
     // Delete user data from local storage and redirect user to home page 
-    localStorage.removeItem("userData");
+    localStorage.removeItem("userDataWithToken");
     router.push("/");
   };
 
