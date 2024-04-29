@@ -1,14 +1,19 @@
 "use client";
 
+import { deleteAccessTokenFromCookie } from "@/app/actions/token";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 
 const LogoutButton = () => {
   const router = useRouter();
 
-  const handleLogout = () => {
-    // Delete user data from local storage and redirect user to home page 
+
+  const handleLogout = async () => {
+    // Delete user data from local storage
     localStorage.removeItem("userDataWithToken");
+
+    // Delete accessToken from cookie
+    await deleteAccessTokenFromCookie();
     router.push("/");
   };
 

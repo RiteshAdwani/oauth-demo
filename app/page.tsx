@@ -1,9 +1,7 @@
-import LoginForm from "@/components/auth/LoginForm";
+import Home from "@/components/shared/Home";
 
-export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-center ">
-      <LoginForm />
-    </main>
-  );
-}
+const page = () => {
+  return <Home />;
+};
+
+export default page;

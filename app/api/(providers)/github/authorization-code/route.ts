@@ -4,12 +4,11 @@ import { NextRequest, NextResponse } from "next/server";
 export const POST = async (req: NextRequest) => {
   // Extract the authorization code from the request body
   const { code } = await req.json();
-  console.log("Code:", code);
 
-  // Retrieve OAuth client ID, client secret, and redirect URI from environment variables
+  // Retrieve OAuth client ID and client secret from environment variables
   const clientId = process.env.GITHUB_CLIENT_ID;
   const clientSecret = process.env.GITHUB_CLIENT_SECRET;
-  const redirectUri = "http://localhost:3000/authorization-code/github-callback";
+  const redirectUri = "http://localhost:3000/github/callback/authorization-code";
 
   try {
     // Exchange the authorization code for an access token from Github OAuth server
@@ -38,7 +37,6 @@ export const POST = async (req: NextRequest) => {
     // Parse the token data from the response
     const tokenData = await tokenResponse.json();
     const accessToken = tokenData.access_token;
-    console.log("Access Token: ", accessToken);
 
     // Fetch user data from GitHub using the access token
     const userDataResponse = await fetch("https://api.github.com/user", {
@@ -49,12 +47,11 @@ export const POST = async (req: NextRequest) => {
 
     // If fetching user data fails, throw an error
     if (!userDataResponse.ok) {
-      throw new Error("Failed to fetch user data from Google");
+      throw new Error("Failed to fetch user data from Github");
     }
 
     // Parse user data from the response
     const userData = await userDataResponse.json();
-    console.log("User Data:", userData);
 
     const userDataWithToken = {
       ...userData,
